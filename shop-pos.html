@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="en" class="minimal-theme">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="assets/images/favicon-32x32.png" type="image/png" />
+    <link href="assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
+    <link href="assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
+    <link href="assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="assets/css/bootstrap-extended.css" rel="stylesheet" />
+    <link href="assets/css/style.css" rel="stylesheet" />
+    <link href="assets/css/icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link href="assets/css/pace.min.css" rel="stylesheet" />
+    <link href="assets/css/dark-theme.css" rel="stylesheet" />
+    <link href="assets/css/light-theme.css" rel="stylesheet" />
+    <link href="assets/css/semi-dark.css" rel="stylesheet" />
+    <link href="assets/css/header-colors.css" rel="stylesheet" />
+    <title>Point of Sale</title>
+    <style>
+        .pos-container {
+            height: calc(100vh - 120px);
+        }
+
+        .product-grid {
+            max-height: calc(100vh - 300px);
+            overflow-y: auto;
+        }
+
+        .cart-items {
+            max-height: calc(100vh - 450px);
+            overflow-y: auto;
+        }
+
+        .barcode-scanner {
+            border: 2px dashed #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            background: #f8f9fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="top-header">
+            <nav class="navbar navbar-expand">
+                <div class="mobile-toggle-icon d-xl-none">
+                    <i class="bi bi-list"></i>
+                </div>
+                <div class="top-navbar d-none d-xl-block">
+                    <ul class="navbar-nav align-items-center">
+                        <li class="nav-item">
+                            <a class="nav-link" href="shop-dashboard.html">Sales & POS</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="search-toggle-icon d-xl-none ms-auto">
+                    <i class="bi bi-search"></i>
+                </div>
+                <form class="searchbar d-none d-xl-flex ms-auto">
+                    <div class="position-absolute top-50 translate-middle-y search-icon ms-3"><i
+                            class="bi bi-search"></i></div>
+                    <input class="form-control" type="text" placeholder="Type here to search">
+                    <div class="position-absolute top-50 translate-middle-y d-block d-xl-none search-close-icon"><i
+                            class="bi bi-x-lg"></i></div>
+                </form>
+                <div class="top-navbar-right ms-3">
+                    <ul class="navbar-nav align-items-center">
+                        <li class="nav-item dropdown dropdown-large">
+                            <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#"
+                                data-bs-toggle="dropdown">
+                                <div class="projects">
+                                    <i class="bi bi-grid-3x3-gap-fill"></i>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown dropdown-large">
+                            <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#">
+                                <div class="projects">
+                                    <i class="bi bi-house-door-fill"></i>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown dropdown-large d-none d-sm-block">
+                            <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#"
+                                data-bs-toggle="dropdown">
+                                <div class="notifications">
+                                    <span class="notify-badge">1</span>
+                                    <i class="bi bi-bell-fill"></i>
+                                </div>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end p-0">
+                                <div class="p-2 border-bottom m-2">
+                                    <h5 class="h5 mb-0">Notifications</h5>
+                                </div>
+                                <div class="header-notifications-list p-2">
+                                    <a class="dropdown-item" href="#">
+                                        <div class="d-flex align-items-center">
+                                            <div class="notification-box"><i
+                                                    class="bi bi-exclamation-triangle-fill text-danger"></i></div>
+                                            <div class="ms-3 flex-grow-1">
+                                                <h6 class="mb-0 dropdown-msg-user">Low Stock Alert <span
+                                                        class="msg-time float-end text-secondary">2 m</span></h6>
+                                                <small class="mb-0 dropdown-msg-text text-secondary">5 products are
+                                                    running low</small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <div class="d-flex align-items-center">
+                                            <div class="notification-box"><i class="bi bi-cash-stack text-success"></i>
+                                            </div>
+                                            <div class="ms-3 flex-grow-1">
+                                                <h6 class="mb-0 dropdown-msg-user">New Sale <span
+                                                        class="msg-time float-end text-secondary">5
+                                                        m</span></h6>
+                                                <small class="mb-0 dropdown-msg-text text-secondary">Sale #SL-001
+                                                    completed</small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-2">
+                                    <div>
+                                        <hr class="dropdown-divider">
+                                    </div>
+                                    <a class="dropdown-item" href="#">
+                                        <div class="text-center">View All Notifications</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="top-navbar-right ms-3">
+                    <ul class="navbar-nav align-items-center">
+                        <li class="nav-item dropdown dropdown-large">
+                            <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#"
+                                data-bs-toggle="dropdown">
+                                <div class="user-setting d-flex align-items-center gap-1">
+                                    <img src="assets/images/avatars/avatar-1.png" class="user-img" alt="">
+                                    <div class="user-name d-none d-sm-block">Shop Manager</div>
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <div class="d-flex align-items-center">
+                                            <img src="assets/images/avatars/avatar-1.png" alt=""
+                                                class="rounded-circle" width="60" height="60">
+                                            <div class="ms-3">
+                                                <h6 class="mb-0 dropdown-user-name">Shop Manager</h6>
+                                                <small
+                                                    class="mb-0 dropdown-user-designation text-secondary">Administrator</small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <div class="d-flex align-items-center">
+                                            <div class="setting-icon"><i class="bi bi-person-fill"></i></div>
+                                            <div class="setting-text ms-3"><span>Profile</span></div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <div class="d-flex align-items-center">
+                                            <div class="setting-icon"><i class="bi bi-gear-fill"></i></div>
+                                            <div class="setting-text ms-3"><span>Setting</span></div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <div class="d-flex align-items-center">
+                                            <div class="setting-icon"><i class="bi bi-lock-fill"></i></div>
+                                            <div class="setting-text ms-3"><span>Logout</span></div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!--end top header-->
+
+        <!--start sidebar -->
+        <aside class="sidebar-wrapper" data-simplebar="true">
+            <div class="sidebar-header">
+                <div>
+                    <img src="assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
+                </div>
+                <div>
+                    <h4 class="logo-text">POS</h4>
+                </div>
+                <div class="toggle-icon ms-auto"><i class="bi bi-chevron-double-left"></i></div>
+            </div>
+            <!--navigation-->
+            <ul class="metismenu" id="menu">
+                <li>
+                    <a href="javascript:;" class="has-arrow">
+                        <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
+                        <div class="menu-title">Sales & POS</div>
+                    </a>
+                    <ul>
+                        <li><a href="shop-pos.html"><i class="bi bi-arrow-right-short"></i>Point of Sale</a></li>
+
+                    </ul>
+                </li>
+            </ul>
+            <!--end navigation-->
+        </aside>
+        <!--end top header-->
+        <main class="page-content">
+            <div class="pos-container">
+                <div class="row g-3 ">
+                    <!-- Left Side: Product Selection -->
+                    <div class="col-lg-8  ">
+                        <div class="card-body">
+                            <div class="row g-3" id="productGrid">
+                                <div class="card radius-10 h-100 p-3">
+                                    <div class="card-header bg-transparent">
+                                        <div class="row g-3 align-items-center">
+                                            <div class="col-md-6">
+                                                <h5 class="mb-0">Product Selection</h5>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="d-flex gap-2">
+                                                    <input type="text" class="form-control" id="barcodeInput"
+                                                        placeholder="Scan or enter barcode..." autofocus>
+                                                    <button class="btn btn-primary" onclick="scanBarcode()"><i
+                                                            class="bi bi-upc-scan"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-header bg-transparent">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h5 class="mb-0">Shopping Cart</h5>
+                                            <button class="btn btn-sm btn-outline-danger" onclick="clearCart()"><i
+                                                    class="bi bi-trash"></i>
+                                                Clear</button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="cart-items p-3">
+                                            <table class="table table-sm mb-0" id="cartTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Item</th>
+                                                        <th>Qty</th>
+                                                        <th>Price</th>
+                                                        <th>Total</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="cartBody">
+                                                    <!-- Cart items will be added here dynamically -->
+                                                </tbody>
+                                            </table>
+                                            <div id="emptyCart" class="text-center py-5">
+                                                <i class="bi bi-cart-x fs-1 text-secondary"></i>
+                                                <p class="text-secondary mt-2">Cart is empty</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-top">
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span>Subtotal:</span>
+                                                <span id="subtotal">$0.00</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span>Tax (10%):</span>
+                                                <span id="tax">$0.00</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span>Discount:</span>
+                                                <div class="input-group input-group-sm" style="width: 150px;">
+                                                    <input type="text" class="form-control" id="discountInput"
+                                                        placeholder="0" onchange="calculateTotal()">
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="d-flex justify-content-between">
+                                                <strong>Total:</strong>
+                                                <strong class="text-primary fs-5" id="total">$0.00</strong>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Payment Method</label>
+                                            <div class="btn-group w-100" role="group">
+                                                <input type="radio" class="btn-check" name="paymentMethod"
+                                                    id="cash" value="cash" checked>
+                                                <label class="btn btn-outline-primary" for="cash">Cash</label>
+                                                <input type="radio" class="btn-check" name="paymentMethod"
+                                                    id="card" value="card">
+                                                <label class="btn btn-outline-primary" for="card">Card</label>
+                                                <input type="radio" class="btn-check" name="paymentMethod"
+                                                    id="mobile" value="mobile">
+                                                <label class="btn btn-outline-primary" for="mobile">Mobile</label>
+                                            </div>
+                                        </div>
+                                        <div class="d-grid gap-2">
+                                            <button class="btn btn-outline-primary" onclick="printReceipt()" title="Print this POS system payment before or after completing">
+                                                <i class="bi bi-printer"></i> Print Receipt
+                                            </button>
+                                            <button class="btn btn-success btn-lg" onclick="processPayment()">
+                                                <i class="bi bi-cash-coin"></i> Process Payment
+                                            </button>
+                                            <button class="btn btn-outline-secondary" onclick="holdSale()">
+                                                <i class="bi bi-pause-circle"></i> Hold Sale
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Right Side: Cart & Checkout -->
+                    <div class="col-lg-4">
+                        <div class="card radius-10">
+                            <div class="card-header">
+                                <div class="mb-3">
+                                    <label class="form-label">Customer</label>
+                                    <select class="form-select" id="customerSelect">
+                                        <option value="">Walk-in Customer</option>
+                                        <option value="1">John Doe</option>
+                                        <option value="2">Jane Smith</option>
+                                    </select>
+                                    <button class="btn btn-sm btn-outline-primary mt-2 w-100"
+                                        onclick="addNewCustomer()"><i class="bi bi-plus"></i> Add New
+                                        Customer</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card radius-10">
+                            <div class="card-header">
+                                <div class="mb-3">
+                                    <label class="form-label">Customer</label>
+                                    <select class="form-select" id="customerSelect">
+                                        <option value="">Walk-in Customer</option>
+                                        <option value="1">John Doe</option>
+                                        <option value="2">Jane Smith</option>
+                                    </select>
+                                    <button class="btn btn-sm btn-outline-primary mt-2 w-100"
+                                        onclick="addNewCustomer()"><i class="bi bi-plus"></i> Add New
+                                        Customer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+        <!--end page main-->
+    </div>
+    <!--end wrapper-->
+
+    <!-- Bootstrap bundle JS -->
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <!--plugins-->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/plugins/simplebar/js/simplebar.min.js"></script>
+    <script src="assets/plugins/metismenu/js/metisMenu.min.js"></script>
+    <script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+    <script src="assets/js/pace.min.js"></script>
+    <!--app-->
+    <script src="assets/js/app.js"></script>
+
+    <script>
+        let cart = [];
+        let cartTotal = 0;
+
+        function addToCart(sku, name, price, qty = 1) {
+            const existingItem = cart.find(item => item.sku === sku);
+            if (existingItem) {
+                existingItem.qty += qty;
+            } else {
+                cart.push({
+                    sku,
+                    name,
+                    price,
+                    qty
+                });
+            }
+            updateCart();
+        }
+
+        function removeFromCart(sku) {
+            cart = cart.filter(item => item.sku !== sku);
+            updateCart();
+        }
+
+        function updateQty(sku, change) {
+            const item = cart.find(item => item.sku === sku);
+            if (item) {
+                item.qty += change;
+                if (item.qty <= 0) {
+                    removeFromCart(sku);
+                    return;
+                }
+            }
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartBody = document.getElementById('cartBody');
+            const emptyCart = document.getElementById('emptyCart');
+
+            if (cart.length === 0) {
+                cartBody.innerHTML = '';
+                emptyCart.style.display = 'block';
+                document.getElementById('subtotal').textContent = '$0.00';
+                document.getElementById('tax').textContent = '$0.00';
+                document.getElementById('total').textContent = '$0.00';
+                return;
+            }
+
+            emptyCart.style.display = 'none';
+            cartBody.innerHTML = cart.map(item => {
+                const itemTotal = (item.price * item.qty).toFixed(2);
+                return `
+          <tr>
+            <td>
+              <small><strong>${item.name}</strong><br>${item.sku}</small>
+            </td>
+            <td>
+              <div class="input-group input-group-sm" style="width: 80px;">
+                <button class="btn btn-outline-secondary" type="button" onclick="updateQty('${item.sku}', -1)">-</button>
+                <input type="text" class="form-control text-center" value="${item.qty}" readonly>
+                <button class="btn btn-outline-secondary" type="button" onclick="updateQty('${item.sku}', 1)">+</button>
+              </div>
+            </td>
+            <td>$${item.price.toFixed(2)}</td>
+            <td>$${itemTotal}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-danger" onclick="removeFromCart('${item.sku}')">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+            }).join('');
+
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const discount = parseFloat(document.getElementById('discountInput').value) || 0;
+            const discountAmount = (subtotal * discount / 100);
+            const afterDiscount = subtotal - discountAmount;
+            const tax = afterDiscount * 0.10;
+            const total = afterDiscount + tax;
+
+            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
+            document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+            cartTotal = total;
+        }
+
+        function clearCart() {
+            if (confirm('Are you sure you want to clear the cart?')) {
+                cart = [];
+                updateCart();
+            }
+        }
+
+        function scanBarcode() {
+            const barcode = document.getElementById('barcodeInput').value;
+            if (barcode) {
+                // Simulate barcode lookup
+                const products = {
+                    '1234567890123': {
+                        sku: 'TV-001',
+                        name: 'Samsung TV 55"',
+                        price: 1250
+                    },
+                    '1234567890124': {
+                        sku: 'PH-001',
+                        name: 'iPhone 15 Pro',
+                        price: 999
+                    },
+                    '1234567890125': {
+                        sku: 'SH-001',
+                        name: 'Nike Air Max',
+                        price: 120
+                    },
+                    '1234567890126': {
+                        sku: 'HM-001',
+                        name: 'Coffee Maker',
+                        price: 89.99
+                    }
+                };
+
+                const product = products[barcode];
+                if (product) {
+                    addToCart(product.sku, product.name, product.price, 1);
+                    document.getElementById('barcodeInput').value = '';
+                    document.getElementById('barcodeInput').focus();
+                } else {
+                    alert('Product not found!');
+                }
+            }
+        }
+
+        function processPayment() {
+            if (cart.length === 0) {
+                alert('Cart is empty!');
+                return;
+            }
+
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+            const customer = document.getElementById('customerSelect').value;
+
+            // Simulate payment processing
+            alert(
+                `Payment processed successfully!\nTotal: $${cartTotal.toFixed(2)}\nMethod: ${paymentMethod.toUpperCase()}\n\nPrinting receipt...`);
+
+            // Clear cart after successful payment
+            cart = [];
+            updateCart();
+            document.getElementById('discountInput').value = '';
+            document.getElementById('customerSelect').value = '';
+        }
+
+        function printReceipt() {
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
+            const method = paymentMethod ? paymentMethod.value : 'N/A';
+            const subtotalEl = document.getElementById('subtotal');
+            const taxEl = document.getElementById('tax');
+            const totalEl = document.getElementById('total');
+            const subtotal = subtotalEl ? subtotalEl.textContent : '$0.00';
+            const tax = taxEl ? taxEl.textContent : '$0.00';
+            const total = totalEl ? totalEl.textContent : '$0.00';
+
+            let rows = cart.map(item => {
+                const itemTotal = (item.price * item.qty).toFixed(2);
+                return `<tr><td>${item.name}</td><td>${item.sku}</td><td>${item.qty}</td><td>$${item.price.toFixed(2)}</td><td>$${itemTotal}</td></tr>`;
+            }).join('');
+
+            const receiptHtml = `
+<!DOCTYPE html>
+<html><head><title>POS Receipt</title>
+<style>body{font-family:monospace;padding:20px;max-width:400px;margin:0 auto}
+table{width:100%;border-collapse:collapse} th,td{border:1px solid #ddd;padding:8px;text-align:left}
+th{background:#f5f5f5} .text-right{text-align:right} .mt-2{margin-top:1rem}
+h2{text-align:center;margin-bottom:1rem}</style></head>
+<body>
+<h2>POS System - Receipt</h2>
+<p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
+<table>
+<thead><tr><th>Item</th><th>SKU</th><th>Qty</th><th>Price</th><th>Total</th></tr></thead>
+<tbody>${rows || '<tr><td colspan="5" class="text-right">No items</td></tr>'}</tbody>
+</table>
+<div class="mt-2">
+<p><strong>Subtotal:</strong> <span class="text-right">${subtotal}</span></p>
+<p><strong>Tax:</strong> <span class="text-right">${tax}</span></p>
+<p><strong>Total:</strong> <span class="text-right">${total}</span></p>
+<p><strong>Payment method:</strong> ${method}</p>
+</div>
+<p class="mt-2" style="text-align:center;font-size:12px">Thank you for your purchase</p>
+</body></html>`;
+            const w = window.open('', '_blank');
+            w.document.write(receiptHtml);
+            w.document.close();
+            w.focus();
+            setTimeout(function() { w.print(); w.close(); }, 250);
+        }
+
+        function holdSale() {
+            if (cart.length === 0) {
+                alert('Cart is empty!');
+                return;
+            }
+            alert('Sale held successfully!');
+        }
+
+        function addNewCustomer() {
+            alert('Open customer add form...');
+        }
+
+        // Barcode input enter key
+        document.getElementById('barcodeInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                scanBarcode();
+            }
+        });
+
+        // Category filter
+        document.querySelectorAll('.nav-link[data-category]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                // Filter products by category (implement as needed)
+            });
+        });
+    </script>
+
+</body>
+
+</html>
