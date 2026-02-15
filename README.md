@@ -2,6 +2,7 @@ Here’s a **clean, professional README.md** you can directly use for your **POS
 You can copy–paste this into your repository and customize names if needed.
 
 ---
+<img width="1906" height="910" alt="image" src="https://github.com/user-attachments/assets/fe055332-8ed6-4b90-83e7-3d435485e320" />
 
 # 🧾 POS (Point of Sale) System
 
@@ -210,4 +211,3 @@ pos-system/
  ┃ ┃ ┣ 📜jquery-jvectormap-2.0.2.css
  ┃ ┃ ┣ 📜jquery-jvectormap-2.0.2.min.js
 ```
-<img width="1906" height="910" alt="image" src="https://github.com/user-attachments/assets/fe055332-8ed6-4b90-83e7-3d435485e320" />
