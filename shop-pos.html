@@ -45,11 +45,22 @@
 
         /* Print: hide entire page, show only receipt */
         @media print {
-            body * { visibility: hidden; }
-            #receipt-print-area, #receipt-print-area * { visibility: visible; }
+            body * {
+                visibility: hidden;
+            }
+
+            #receipt-print-area,
+            #receipt-print-area * {
+                visibility: visible;
+            }
+
             #receipt-print-area {
-                position: absolute; left: 0; top: 0; width: 100%;
-                padding: 20px; background: #fff;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 20px;
+                background: #fff;
             }
         }
     </style>
@@ -162,8 +173,8 @@
                                 <li>
                                     <a class="dropdown-item" href="#">
                                         <div class="d-flex align-items-center">
-                                            <img src="assets/images/avatars/avatar-1.png" alt=""
-                                                class="rounded-circle" width="60" height="60">
+                                            <img src="assets/images/avatars/avatar-1.png" alt="" class="rounded-circle"
+                                                width="60" height="60">
                                             <div class="ms-3">
                                                 <h6 class="mb-0 dropdown-user-name">Shop Manager</h6>
                                                 <small
@@ -304,7 +315,7 @@
                                                 <span>Discount:</span>
                                                 <div class="input-group input-group-sm" style="width: 150px;">
                                                     <input type="text" class="form-control" id="discountInput"
-                                                        placeholder="0" onchange="calculateTotal()">
+                                                        placeholder="0" onkeyup="calculateTotal()">
                                                     <span class="input-group-text">%</span>
                                                 </div>
                                             </div>
@@ -317,26 +328,27 @@
                                         <div class="mb-3">
                                             <label class="form-label">Payment Method</label>
                                             <div class="btn-group w-100" role="group">
-                                                <input type="radio" class="btn-check" name="paymentMethod"
-                                                    id="cash" value="cash" checked>
+                                                <input type="radio" class="btn-check" name="paymentMethod" id="cash"
+                                                    value="cash" checked>
                                                 <label class="btn btn-outline-primary" for="cash">Cash</label>
-                                                <input type="radio" class="btn-check" name="paymentMethod"
-                                                    id="card" value="card">
+                                                <input type="radio" class="btn-check" name="paymentMethod" id="card"
+                                                    value="card">
                                                 <label class="btn btn-outline-primary" for="card">Card</label>
-                                                <input type="radio" class="btn-check" name="paymentMethod"
-                                                    id="mobile" value="mobile">
+                                                <input type="radio" class="btn-check" name="paymentMethod" id="mobile"
+                                                    value="mobile">
                                                 <label class="btn btn-outline-primary" for="mobile">Mobile</label>
                                             </div>
                                         </div>
                                         <div class="d-grid gap-2">
-                                            <button class="btn btn-outline-primary" onclick="printReceipt()" title="Print this POS system payment before or after completing">
-                                                <i class="bi bi-printer"></i> Print Receipt
-                                            </button>
-                                            <button class="btn btn-success btn-lg" onclick="processPayment()">
+                                            <button class="btn btn-success" onclick="processPayment()">
                                                 <i class="bi bi-cash-coin"></i> Process Payment
                                             </button>
                                             <button class="btn btn-outline-secondary" onclick="holdSale()">
                                                 <i class="bi bi-pause-circle"></i> Hold Sale
+                                            </button>
+                                            <button class="btn btn-outline-primary" onclick="printReceipt()"
+                                                title="Print this POS system payment before or after completing">
+                                                <i class="bi bi-printer"></i> Print Receipt
                                             </button>
                                         </div>
                                     </div>
@@ -577,7 +589,7 @@
                 return div.innerHTML;
             }
 
-            var rows = cart.map(function(item) {
+            var rows = cart.map(function (item) {
                 var itemTotal = (item.price * item.qty).toFixed(2);
                 return '<tr><td>' + escapeHtml(item.name) + '</td><td>' + escapeHtml(item.sku) + '</td><td>' + item.qty + '</td><td>$' + item.price.toFixed(2) + '</td><td>$' + itemTotal + '</td></tr>';
             }).join('');
@@ -608,7 +620,7 @@
             el.innerHTML = receiptContent;
             el.style.display = 'block';
 
-            window.onafterprint = function() {
+            window.onafterprint = function () {
                 el.style.display = 'none';
                 el.innerHTML = '';
                 window.onafterprint = null;
@@ -631,7 +643,7 @@
         }
 
         // Barcode input enter key
-        document.getElementById('barcodeInput').addEventListener('keypress', function(e) {
+        document.getElementById('barcodeInput').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 scanBarcode();
             }
@@ -639,13 +651,18 @@
 
         // Category filter
         document.querySelectorAll('.nav-link[data-category]').forEach(link => {
-            link.addEventListener('click', function(e) {
+            link.addEventListener('click', function (e) {
                 e.preventDefault();
                 document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
                 this.classList.add('active');
                 // Filter products by category (implement as needed)
             });
         });
+
+        // Add 3 items so cart table shows Item, Qty, Price, Total
+        addToCart('ITEM-001', 'Item 1', 29.99, 1);
+        addToCart('ITEM-002', 'Item 2', 45.50, 2);
+        addToCart('ITEM-003', 'Item 3', 12.00, 1);
     </script>
 
 </body>
