@@ -42,10 +42,21 @@
             text-align: center;
             background: #f8f9fa;
         }
+
+        /* Print: hide entire page, show only receipt */
+        @media print {
+            body * { visibility: hidden; }
+            #receipt-print-area, #receipt-print-area * { visibility: visible; }
+            #receipt-print-area {
+                position: absolute; left: 0; top: 0; width: 100%;
+                padding: 20px; background: #fff;
+            }
+        }
     </style>
 </head>
 
 <body>
+    <div id="receipt-print-area" style="display:none;"></div>
     <div class="wrapper">
         <header class="top-header">
             <nav class="navbar navbar-expand">
@@ -543,47 +554,68 @@
         }
 
         function printReceipt() {
+            if (cart.length === 0) {
+                if (!confirm('Cart is empty. Print empty receipt anyway?')) return;
+            }
+
+            // Ensure totals are up to date (including discount)
+            if (cart.length > 0) calculateTotal();
+
             const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
             const method = paymentMethod ? paymentMethod.value : 'N/A';
             const subtotalEl = document.getElementById('subtotal');
             const taxEl = document.getElementById('tax');
             const totalEl = document.getElementById('total');
-            const subtotal = subtotalEl ? subtotalEl.textContent : '$0.00';
-            const tax = taxEl ? taxEl.textContent : '$0.00';
-            const total = totalEl ? totalEl.textContent : '$0.00';
+            const subtotal = (subtotalEl && subtotalEl.textContent) ? subtotalEl.textContent.trim() : '$0.00';
+            const tax = (taxEl && taxEl.textContent) ? taxEl.textContent.trim() : '$0.00';
+            const total = (totalEl && totalEl.textContent) ? totalEl.textContent.trim() : '$0.00';
 
-            let rows = cart.map(item => {
-                const itemTotal = (item.price * item.qty).toFixed(2);
-                return `<tr><td>${item.name}</td><td>${item.sku}</td><td>${item.qty}</td><td>$${item.price.toFixed(2)}</td><td>$${itemTotal}</td></tr>`;
+            function escapeHtml(text) {
+                if (!text) return '';
+                var div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            var rows = cart.map(function(item) {
+                var itemTotal = (item.price * item.qty).toFixed(2);
+                return '<tr><td>' + escapeHtml(item.name) + '</td><td>' + escapeHtml(item.sku) + '</td><td>' + item.qty + '</td><td>$' + item.price.toFixed(2) + '</td><td>$' + itemTotal + '</td></tr>';
             }).join('');
 
-            const receiptHtml = `
-<!DOCTYPE html>
-<html><head><title>POS Receipt</title>
-<style>body{font-family:monospace;padding:20px;max-width:400px;margin:0 auto}
-table{width:100%;border-collapse:collapse} th,td{border:1px solid #ddd;padding:8px;text-align:left}
-th{background:#f5f5f5} .text-right{text-align:right} .mt-2{margin-top:1rem}
-h2{text-align:center;margin-bottom:1rem}</style></head>
-<body>
-<h2>POS System - Receipt</h2>
-<p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
-<table>
-<thead><tr><th>Item</th><th>SKU</th><th>Qty</th><th>Price</th><th>Total</th></tr></thead>
-<tbody>${rows || '<tr><td colspan="5" class="text-right">No items</td></tr>'}</tbody>
-</table>
-<div class="mt-2">
-<p><strong>Subtotal:</strong> <span class="text-right">${subtotal}</span></p>
-<p><strong>Tax:</strong> <span class="text-right">${tax}</span></p>
-<p><strong>Total:</strong> <span class="text-right">${total}</span></p>
-<p><strong>Payment method:</strong> ${method}</p>
-</div>
-<p class="mt-2" style="text-align:center;font-size:12px">Thank you for your purchase</p>
-</body></html>`;
-            const w = window.open('', '_blank');
-            w.document.write(receiptHtml);
-            w.document.close();
-            w.focus();
-            setTimeout(function() { w.print(); w.close(); }, 250);
+            var receiptContent = '<div style="font-family:monospace;padding:20px;max-width:400px;margin:0 auto">' +
+                '<h2 style="text-align:center;margin-bottom:1rem">POS System - Receipt</h2>' +
+                '<p><strong>Date:</strong> ' + escapeHtml(new Date().toLocaleString()) + '</p>' +
+                '<table style="width:100%;border-collapse:collapse">' +
+                '<thead><tr><th style="border:1px solid #ddd;padding:8px;text-align:left">Item</th><th style="border:1px solid #ddd;padding:8px">SKU</th><th style="border:1px solid #ddd;padding:8px">Qty</th><th style="border:1px solid #ddd;padding:8px">Price</th><th style="border:1px solid #ddd;padding:8px">Total</th></tr></thead>' +
+                '<tbody>' + (rows || '<tr><td colspan="5" style="text-align:right">No items</td></tr>') + '</tbody>' +
+                '</table>' +
+                '<div style="margin-top:1rem">' +
+                '<p><strong>Subtotal:</strong> ' + escapeHtml(subtotal) + '</p>' +
+                '<p><strong>Tax:</strong> ' + escapeHtml(tax) + '</p>' +
+                '<p><strong>Total:</strong> ' + escapeHtml(total) + '</p>' +
+                '<p><strong>Payment method:</strong> ' + escapeHtml(method) + '</p>' +
+                '</div>' +
+                '<p style="text-align:center;font-size:12px;margin-top:1rem">Thank you for your purchase</p>' +
+                '</div>';
+
+            var el = document.getElementById('receipt-print-area');
+            if (!el) {
+                el = document.createElement('div');
+                el.id = 'receipt-print-area';
+                el.style.display = 'none';
+                document.body.insertBefore(el, document.body.firstChild);
+            }
+            el.innerHTML = receiptContent;
+            el.style.display = 'block';
+
+            window.onafterprint = function() {
+                el.style.display = 'none';
+                el.innerHTML = '';
+                window.onafterprint = null;
+            };
+            window.print();
+
+            el.style.display = 'none';
         }
 
         function holdSale() {
